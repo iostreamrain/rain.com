@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>书屋</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" value="" id="Ank" style="border:0;outline:none;position:absolute; BACKGROUND: none transparent scroll repeat 0% 0%;" />
+    <script type="text/javascript">
+        //搜索框属性
+        var AnkWidth = 500;
+        var AnkHeight = 70;
+        var AnkFontsize = 50;
+
+        var canvas = document.createElement("canvas");
+        canvas.id = "canvas";
+        canvas.width = document.body.offsetWidth;
+        canvas.height = document.body.offsetHeight;
+        document.body.appendChild(canvas);
+    </script>
+    <script type="text/javascript">
+        //坐标转换
+        //a b:坐标位置   c d:矩形长宽
+        function Bian(a, b, c, d) {
+            var temp = [a / 2 - c / 2, b / 2.5 - d / 2, c, d];
+            return temp;
+        }
+
+        function RainPlot(pinter) {
+            var mycontext = canvas.getContext('2d');
+            var centerX = canvas.width;
+            var centerY = canvas.height;
+            var rain = [
+                [0, 0, 1, 4],
+                [1, 1, 2, 1],
+                [4, 0, 1, 4],
+                [5, 0, 1, 1],
+                [5, 2, 1, 1],
+                [6, 0, 1, 4],
+                [8, 0, 1, 4],
+                [10, 0, 1, 3],
+                [11, 0, 1, 1],
+                [12, 0, 1, 3],
+                [10, 3, 3, 1]
+            ];
+            var zoom = 16;
+            var rainoffx = parseInt(centerX / 2 - AnkWidth / 2 - zoom * 15);
+            var rainoffy = parseInt(centerY / 2.5 - 4 * zoom / 2);
+            pinter.fillStyle = '#000';
+            // pinter.strokeRect(rainoffx,rainoffy,100,100);
+
+            for (var val in rain) {
+                if (val == rain.length - 1) {
+                    pinter.fillStyle = '#F00';
+                }
+                pinter.fillRect(rain[val][0] * zoom + rainoffx, rain[val][1] * zoom + rainoffy, rain[val][2] * zoom, rain[val][3] * zoom)
+
+            }
+        }
+
+        function mycontext() {
+
+            var mycontext = canvas.getContext('2d');
+            var centerX = canvas.width;
+            var centerY = canvas.height;
+
+            mycontext.strokeStyle = '#000';
+            mycontext.lineWidth = 5;
+            var tem = Bian(centerX, centerY, AnkWidth, AnkHeight);
+            mycontext.strokeRect(tem[0], tem[1], tem[2], tem[3]);
+
+            //搜索输入框
+            var Ank = document.getElementById('Ank');
+            Ank.style['height'] = AnkHeight;
+            Ank.style['width'] = AnkWidth;
+            Ank.style['font-size'] = AnkFontsize;
+            Ank.style['left'] = tem[0];
+            Ank.style['top'] = tem[1];
+
+            RainPlot(mycontext);
+        }
+
+        window.onresize = function() {
+            canvas.width = document.body.offsetWidth;
+            canvas.height = document.body.offsetHeight;
+            mycontext();
+        }
+        mycontext();
+    </script>
+</body>
+
+</html>
